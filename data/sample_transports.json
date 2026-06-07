@@ -1,0 +1,44 @@
+[
+  {
+    "type": "Car",
+    "name": "BMW",
+    "number": 101,
+    "fuel": "Gasoline",
+    "speed": 180.0,
+    "weight": 1400.0,
+    "wheels": 4,
+    "passengers": 4,
+    "enginePower": 250.0
+  },
+  {
+    "type": "Bus",
+    "name": "CityBus",
+    "number": 22,
+    "fuel": "Diesel",
+    "speed": 90.0,
+    "weight": 8500.0,
+    "wheels": 6,
+    "passengers": 45,
+    "routeLength": 18.5
+  },
+  {
+    "type": "Plane",
+    "name": "Boeing737",
+    "number": 737,
+    "fuel": "Jet fuel",
+    "speed": 840.0,
+    "weight": 41400.0,
+    "wingspan": 35.8,
+    "maxAltitude": 12500.0
+  },
+  {
+    "type": "Bicycle",
+    "name": "RoadBike",
+    "number": 7,
+    "fuel": "none",
+    "speed": 32.0,
+    "weight": 9.5,
+    "wheels": 2,
+    "passengers": 1
+  }
+]
