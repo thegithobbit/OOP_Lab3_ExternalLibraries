@@ -1,67 +1,79 @@
-# OOP Lab 3: Transport Manager with External Library
+# Лабораторна робота №3: Transport Manager з використанням зовнішньої бібліотеки
 
-## Project Description
+## Загальний опис
 
-This project is a C++ console application for managing different types of transport. It is based on a previous object-oriented programming laboratory work about transport classes and queues.
+Це консольна програма мовою C++ для керування різними типами транспорту. Проєкт створено на основі попередньої лабораторної роботи з об'єктно-орієнтованого програмування, у якій була реалізована ієрархія транспортних класів та кілька типів черг.
 
-The program supports creating, displaying, saving, and loading transport objects. The project demonstrates object-oriented programming concepts such as inheritance, polymorphism, virtual methods, and dynamic casting.
+У цій лабораторній роботі програму розширено за допомогою зовнішньої бібліотеки `nlohmann/json`. Завдяки цьому програма може зберігати список транспортних об'єктів у JSON-файл і завантажувати їх назад.
 
-## External Library
+## Використана зовнішня бібліотека
 
-The project uses the external C++ library:
+У проєкті використано бібліотеку:
 
 - [nlohmann/json](https://github.com/nlohmann/json)
 
-This library is not part of the C++ standard library. It is used to work with JSON data.
+Ця бібліотека не є частиною стандартної бібліотеки C++. Вона використовується для роботи з JSON-даними.
 
-## How the Library Is Used
+## Для чого використовується бібліотека
 
-The `nlohmann/json` library is used for:
+Бібліотека `nlohmann/json` використовується для таких задач:
 
-- converting transport objects to JSON;
-- saving a list of transport objects to a `.json` file;
-- loading transport objects from a `.json` file;
-- reading JSON fields and creating the correct C++ transport class based on the `"type"` field;
-- formatting JSON output with indentation using `dump(4)`.
+- перетворення об'єктів транспорту у JSON;
+- збереження списку транспортних об'єктів у файл `.json`;
+- завантаження транспортних об'єктів із JSON-файлу;
+- читання полів JSON і створення відповідного C++ класу на основі поля `"type"`;
+- форматування JSON-файлу за допомогою `dump(4)`, щоб файл був зручним для читання.
 
-Main places where the library is used:
+Основні місця використання бібліотеки:
 
 - `TransportClasses.h`
-    - `toJson()` methods;
-    - `transportFromJson()` function;
+  - методи `toJson()`;
+  - функція `transportFromJson()`;
 - `main.cpp`
-    - `saveTransportsToJson()` function;
-    - `loadTransportsFromJson()` function.
+  - функція `saveTransportsToJson()`;
+  - функція `loadTransportsFromJson()`.
 
-## Transport Types
+## Основні можливості програми
 
-The program supports the following transport types:
+Програма підтримує такі типи транспорту:
 
-- Car
-- Bus
-- Plane
-- Boat
-- Truck
-- Bicycle
-- Train
+- `Car`
+- `Bus`
+- `Plane`
+- `Boat`
+- `Truck`
+- `Bicycle`
+- `Train`
 
-Each transport type has common fields, such as name, number, speed, weight, and fuel. Some transport types also have additional fields, for example engine power, route length, wingspan, cargo capacity, or number of carriages.
+У програмі використано такі можливості ООП:
 
-## Program Features
+- наслідування;
+- поліморфізм;
+- віртуальні методи;
+- перевизначення методів у похідних класах;
+- робота з об'єктами через `shared_ptr<Transport>`;
+- динамічне приведення типів через `dynamic_pointer_cast`.
 
-The console menu allows the user to:
+Меню програми дозволяє:
 
-1. Add a new transport object.
-2. Show all transport objects.
-3. Show transport queues.
-4. Execute actions for a selected transport object.
-5. Save all transport objects to a JSON file.
-6. Load transport objects from a JSON file.
-7. Exit the program.
+1. Додати новий транспорт.
+2. Показати всі транспортні об'єкти.
+3. Показати черги транспорту.
+4. Виконати дію з вибраним транспортом.
+5. Зберегти список транспорту у JSON-файл.
+6. Завантажити список транспорту з JSON-файлу.
+7. Завершити роботу програми.
 
-## Sample JSON Data
+## Приклад JSON-файлу
 
-A sample file is provided:
+У репозиторії є приклад даних:
 
-```text
+```
 data/sample_transports.json
+```
+
+Якщо запускати програму з CLion, робочою директорією зазвичай є cmake-build-debug, тому приклад можна завантажити так:
+
+```
+../data/sample_transports.json
+```

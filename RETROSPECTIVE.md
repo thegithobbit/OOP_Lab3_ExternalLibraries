@@ -1,99 +1,123 @@
-# Retrospective: Using External Library in C++ Project
+# Ретроспектива використання зовнішньої бібліотеки
 
-## General Information
+## Загальна інформація
 
-This laboratory work is based on a previous object-oriented programming project about transport classes. The original project already had an inheritance hierarchy for different transport types and several queue implementations.
+Ця лабораторна робота виконана на основі попереднього проєкту з об'єктно-орієнтованого програмування про транспорт. У початковій версії вже була реалізована ієрархія класів `Transport`, `Car`, `Bus`, `Plane`, `Boat`, `Truck`, `Bicycle`, `Train`, а також кілька структур черг.
 
-For this laboratory work, the project was extended with an external C++ library: `nlohmann/json`.
+Для лабораторної роботи №3 проєкт було розширено за допомогою зовнішньої бібліотеки `nlohmann/json`.
 
-## What Tasks Were Planned for the Library?
+## Які задачі планувалося вирішити за допомогою бібліотеки?
 
-The main task for the external library was to add persistent data storage to the program.
+Головна задача полягала в тому, щоб додати до програми збереження і завантаження даних.
 
-The library was planned to solve the following tasks:
+За допомогою бібліотеки планувалося реалізувати:
 
-- convert C++ transport objects into JSON format;
-- save a collection of transport objects to a JSON file;
-- load transport objects from a JSON file;
-- restore the correct derived class based on the `"type"` field;
-- make saved data readable and editable outside the program.
+- перетворення C++ об'єктів транспорту у JSON;
+- збереження списку транспортних об'єктів у JSON-файл;
+- завантаження транспортних об'єктів із JSON-файлу;
+- відновлення правильного похідного класу на основі поля `"type"`;
+- створення файлу даних, який можна читати і редагувати поза програмою.
 
-## Why Was This Library Chosen?
+## Чому було обрано саме цю бібліотеку?
 
-The `nlohmann/json` library was chosen because it is one of the most popular JSON libraries for C++. It has a simple syntax and works naturally with modern C++ code.
+Було обрано бібліотеку `nlohmann/json`, тому що вона є однією з найпопулярніших JSON-бібліотек для C++. Вона має зрозумілий синтаксис і добре підходить для сучасного C++ коду.
 
-Compared with some other JSON libraries, `nlohmann/json` is easier to start using because JSON values can be created with initializer lists and accessed in a readable way.
+Порівняно з деякими іншими JSON-бібліотеками, `nlohmann/json` простіше почати використовувати, бо JSON-об'єкти можна створювати через зрозумілий синтаксис, схожий на роботу з контейнерами.
 
-Another reason for choosing this library is that it is header-only and can be easily integrated into a CMake project using `FetchContent`.
+Також важливо, що бібліотеку зручно підключити до CMake-проєкту через `FetchContent`.
 
-## Installation and Configuration Experience
+## Наскільки просто було встановити і налаштувати бібліотеку?
 
-The library was connected through CMake using `FetchContent`.
+Бібліотеку було підключено через CMake за допомогою `FetchContent`.
 
-This approach was convenient because it did not require manually downloading files into the repository. During the first CMake configuration, the library is downloaded automatically from GitHub.
+Це виявилося зручним способом, бо не потрібно вручну завантажувати файли бібліотеки в репозиторій. Під час першої конфігурації CMake бібліотека автоматично завантажується з GitHub.
 
-The configuration was mostly simple. One small warning appeared about `DOWNLOAD_EXTRACT_TIMESTAMP`, and it was fixed by adding this option to `FetchContent_Declare`.
+Під час налаштування з'явилося попередження CMake щодо `DOWNLOAD_EXTRACT_TIMESTAMP`. Його було виправлено додаванням параметра:
 
-## Documentation Experience
+```cmake
+DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+```
+## Наскільки корисною була документація?
+Документація бібліотеки була зрозумілою і корисною. У ній є приклади створення JSON-об'єктів, читання полів, запису у файл, форматування JSON і підключення бібліотеки через CMake.
 
-The official documentation and GitHub repository were useful. The examples clearly show how to create JSON objects, read fields, write JSON to files, and format output.
+Використані ресурси:
 
-The most useful resources were:
+- Офіційний репозиторій: https://github.com/nlohmann/json
+- Документація з інтеграції через CMake: https://json.nlohmann.me/integration/cmake/
+- Основна документація і приклади: https://json.nlohmann.me/
+- Найкориснішими були приклади роботи з JSON-об'єктами та документація щодо CMake-інтеграції.
 
-- Official GitHub repository: https://github.com/nlohmann/json
-- Integration examples with CMake: https://json.nlohmann.me/integration/cmake/
-- Basic usage examples: https://json.nlohmann.me/
+## Як саме бібліотека використовується в коді?
+Бібліотека використовується у файлах:
 
-The documentation was enough for the tasks in this project.
+- TransportClasses.h
+- main.cpp
 
-## How the Library Was Used in Code
+У TransportClasses.h кожен транспортний клас має метод toJson(), який перетворює об'єкт у JSON.
 
-The library is used in two main files:
+Також реалізовано функцію transportFromJson(). Вона читає поле "type" і створює відповідний C++ об'єкт: Car, Bus, Plane, Boat, Truck, Bicycle або Train.
 
-- `TransportClasses.h`
-- `main.cpp`
+У main.cpp бібліотека використовується у функціях:
 
-In `TransportClasses.h`, every transport class has a `toJson()` method. This method converts the object into a JSON object.
+- saveTransportsToJson()
+- loadTransportsFromJson()
 
-There is also a `transportFromJson()` function. It reads the `"type"` field from JSON and creates the correct C++ object, for example `Car`, `Bus`, `Plane`, `Truck`, or another transport type.
+Функція збереження створює JSON-масив і записує його у файл. Функція завантаження читає JSON-файл і відновлює список транспортних об'єктів.
 
-In `main.cpp`, the library is used in:
+## Наскільки зручно було використовувати бібліотеку?
+Бібліотеку було зручно використовувати. Створення JSON-об'єктів з C++ полів виглядає зрозуміло:
 
-- `saveTransportsToJson()`
-- `loadTransportsFromJson()`
-
-The save function creates a JSON array and writes it to a file. The load function reads JSON from a file and restores transport objects.
-
-## Convenience of Use
-
-The library was convenient to use. Creating JSON objects from C++ data was simple and readable.
-
-For example, code like this is clear:
-
-```cpp
+```
 data["enginePower"] = enginePower;
 ```
 
-Also, formatting output with indentation was easy:
+Також зручно, що JSON можна легко записати у файл з відступами:
 
-```cpp
+```
 output << data.dump(4);
 ```
 
-This made the generated JSON file readable for a human.
+Це робить збережений файл читабельним для людини.
 
-## Behavior and Interaction with Own Code
-The behavior of the library was understandable. JSON fields can be accessed with at() when the field is required, and with value() when a default value is acceptable.
+## Наскільки зрозумілою була поведінка бібліотеки?
+Поведінка бібліотеки була достатньо зрозумілою. Для обов'язкових полів використовувався метод at(), а для полів зі значенням за замовчуванням - метод value().
 
-The interaction between the library and the object-oriented class hierarchy was also logical. Each class is responsible for converting itself to JSON, while the factory function transportFromJson() is responsible for creating objects from JSON.
-
-## Problems During Work
-One small issue was related to CMake. During configuration, CMake showed a warning about DOWNLOAD_EXTRACT_TIMESTAMP. This was solved by adding:
+Наприклад, поле fuel можна зчитати так:
 
 ```
-DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+const string fuel = data.value("fuel", "none");
 ```
 
-Another challenge was that the program has polymorphic objects stored as shared_ptr<Transport>. Because of this, loading from JSON required a separate factory function that checks the "type" field and creates the correct derived class.
+Це корисно для типів транспорту, де пальне може бути відсутнім, наприклад для велосипеда.
 
-This problem was solved with the transportFromJson() function.
+## Як бібліотека взаємодіє з власним кодом?
+Взаємодія бібліотеки з власним кодом побудована через методи класів і фабричну функцію.
+
+Кожен клас сам відповідає за перетворення себе у JSON через toJson(). А функція transportFromJson() відповідає за зворотний процес: вона аналізує JSON і створює потрібний об'єкт.
+
+Оскільки об'єкти зберігаються як shared_ptr<Transport>, для завантаження з JSON потрібна окрема логіка, яка визначає реальний похідний тип об'єкта.
+
+## Які проблеми виникали?
+Основна складність була пов'язана з поліморфізмом. JSON-файл не зберігає C++ тип автоматично, тому потрібно було явно додати поле "type" і на його основі створювати правильний клас.
+
+Цю проблему було вирішено функцією
+```
+transportFromJson().
+```
+
+Також виникло невелике попередження CMake щодо DOWNLOAD_EXTRACT_TIMESTAMP, яке було виправлено в CMakeLists.txt.
+
+## Позитивні аспекти бібліотеки
+Позитивні аспекти використання nlohmann/json:
+
+- простий і зрозумілий синтаксис;
+- зручне створення JSON-об'єктів;
+- хороша документація;
+- проста інтеграція з CMake;
+- можливість форматувати JSON-файл з відступами;
+- зрозумілі повідомлення про помилки при некоректному JSON.
+
+## Негативні аспекти бібліотеки
+Основний недолік полягає в тому, що бібліотека не може автоматично відновлювати поліморфні C++ об'єкти. Логіку вибору похідного класу потрібно писати самостійно.
+
+Також потрібно уважно перевіряти, чи існують потрібні поля у JSON-файлі. Якщо поле відсутнє, at() може згенерувати виняток.
